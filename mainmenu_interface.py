@@ -27,7 +27,7 @@ class MainUI(UI):
     def place_forget(self):
         MainUI.main_frame.place_forget()
 
-
+print('Hellp world!')
 mmenu_interface = MainUI()
 
 
