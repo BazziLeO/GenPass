@@ -2,15 +2,16 @@ from function_generator import *
 from checkpas_interface import *
 from mainmenu_interface import *
 
+
 def check_password():
     password = CheckUI.check_password_entry.get()
-    if selection_letters(only_type_symbols(password, 'letters'), 'great_letters') == '':
+    if selection_letters(only_type_symbols(password, 'letters'), 'great_letters') == '' and allow_letter.get() and allow_gr_letter.get():
         result = 'Нет больших букв'
-    elif selection_letters(only_type_symbols(password, 'letters'), 'small_letters') == '':
+    elif selection_letters(only_type_symbols(password, 'letters'), 'small_letters') == '' and allow_letter.get() and allow_sm_letter.get():
         result = 'Нет маленьких букв'
-    elif only_type_symbols(password, 'numbers') == '':
+    elif only_type_symbols(password, 'numbers') == '' and allow_number.get():
         result = 'В пароле нет цифр'
-    elif only_type_symbols(password, 'other') == '':
+    elif only_type_symbols(password, 'other') == '' and allow_other.get():
         result = 'В пароле нет символов помимо цифр и букв'
     elif not len_checkpas_range.get()[0] <= len(password) <= len_checkpas_range.get()[1]:
         result = f'Длина пароля не в рамках длины [{len_checkpas_range.get()[0]}, {len_checkpas_range.get()[1]}]'
@@ -19,6 +20,7 @@ def check_password():
         for e in password:
             if allowed_symbolbet.get().count(e) == 0:
                 result = f'Символа "{e}" нету в разрешенном списке!'
+                break
     messagebox.showinfo("Результат", result)
 
 
@@ -32,7 +34,7 @@ def delete_symbols():
     if select_checksymbolbet_action.get() == 1:
         logic_delete_symbols(allowed_symbolbet)
     elif select_checksymbolbet_action.get() == 2:
-        logic_delete_symbols(required_symbolbet)
+        logic_delete_symbols(required_check_symbolbet)
 
 
 def add_symbols():
@@ -44,7 +46,7 @@ def add_symbols():
     if select_checksymbolbet_action.get() == 1:
         logic_add_symbols(allowed_symbolbet)
     elif select_checksymbolbet_action.get() == 2:
-        logic_add_symbols(required_symbolbet)
+        logic_add_symbols(required_check_symbolbet)
 
 
 
@@ -57,7 +59,7 @@ def stay_symbols():
     if select_checksymbolbet_action.get() == 1:
         logic_stay_symbols(allowed_symbolbet)
     elif select_checksymbolbet_action.get() == 2:
-        logic_stay_symbols(required_symbolbet)
+        logic_stay_symbols(required_check_symbolbet)
 
 
 def select_range():
@@ -77,52 +79,52 @@ def get_range():
 
 
 def stay_letters():
-    if select_letter.get():
-        symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'letters')))
+    if allow_letter.get():
+        allowed_symbolbet.delete_black_symbols(split(only_type_symbols(allowed_symbolbet.get_black(), 'letters')))
         check_interface.gr_letter_checkbutton['state'] = NORMAL
         check_interface.sm_letter_checkbutton['state'] = NORMAL
     else:
-        symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'letters')))
+        allowed_symbolbet.add_black_symbols(split(only_type_symbols(allowed_symbolbet.get(), 'letters')))
         check_interface.gr_letter_checkbutton['state'] = DISABLED
         check_interface.sm_letter_checkbutton['state'] = DISABLED
 
 
 def stay_sm_letters():
-    if select_sm_letter.get():
-        symbolbet.delete_black_symbols(
-            split(selection_letters(only_type_symbols(symbolbet.get_black(), 'letters'), 'small_letters')))
-        if select_gr_letter.get():
+    if allow_sm_letter.get():
+        allowed_symbolbet.delete_black_symbols(
+            split(selection_letters(only_type_symbols(allowed_symbolbet.get_black(), 'letters'), 'small_letters')))
+        if allow_gr_letter.get():
             check_interface.letter_checkbutton['state'] = NORMAL
     else:
-        symbolbet.add_black_symbols(
-            split(selection_letters(only_type_symbols(symbolbet.get(), 'letters'), 'small_letters')))
+        allowed_symbolbet.add_black_symbols(
+            split(selection_letters(only_type_symbols(allowed_symbolbet.get(), 'letters'), 'small_letters')))
         check_interface.letter_checkbutton['state'] = DISABLED
 
 
 def stay_gr_letters():
-    if select_gr_letter.get():
-        symbolbet.delete_black_symbols(
-            split(selection_letters(only_type_symbols(symbolbet.get_black(), 'letters'), 'great_letters')))
-        if select_sm_letter.get():
+    if allow_gr_letter.get():
+        allowed_symbolbet.delete_black_symbols(
+            split(selection_letters(only_type_symbols(allowed_symbolbet.get_black(), 'letters'), 'great_letters')))
+        if allow_sm_letter.get():
             check_interface.letter_checkbutton['state'] = NORMAL
     else:
-        symbolbet.add_black_symbols(
-            split(selection_letters(only_type_symbols(symbolbet.get(), 'letters'), 'great_letters')))
+        allowed_symbolbet.add_black_symbols(
+            split(selection_letters(only_type_symbols(allowed_symbolbet.get(), 'letters'), 'great_letters')))
         check_interface.letter_checkbutton['state'] = DISABLED
 
 
 def stay_numbers():
-    if select_number.get():
-        allowed_symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'numbers')))
+    if allow_number.get():
+        allowed_symbolbet.delete_black_symbols(split(only_type_symbols(allowed_symbolbet.get_black(), 'numbers')))
     else:
-        allowed_symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'numbers')))
+        allowed_symbolbet.add_black_symbols(split(only_type_symbols(allowed_symbolbet.get(), 'numbers')))
 
 
 def stay_other():
-    if select_other.get():
-        allowed_symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'other')))
+    if allow_other.get():
+        allowed_symbolbet.delete_black_symbols(split(only_type_symbols(allowed_symbolbet.get_black(), 'other')))
     else:
-        allowed_symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'other')))
+        allowed_symbolbet.add_black_symbols(split(only_type_symbols(allowed_symbolbet.get(), 'other')))
 
 def automatically_update_list():
     if check_interface.get_list_entry.get() != '':
@@ -135,7 +137,7 @@ def get_list():
     if select_checksymbolbet_action.get() == 1:
         logic_get_list(allowed_symbolbet)
     elif select_checksymbolbet_action.get() == 2:
-        logic_get_list(required_symbolbet)
+        logic_get_list(required_check_symbolbet)
 
 
 def leave():

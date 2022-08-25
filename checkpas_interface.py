@@ -1,6 +1,5 @@
 from widget_classes import *
 from other_classes import *
-from function_generator import *
 allow_number, allow_letter, allow_gr_letter = IntVar(), IntVar(), IntVar()
 allow_sm_letter, allow_other = IntVar(), IntVar()
 allow_number.set(1)
@@ -51,10 +50,10 @@ class CheckUI(UI):
     get_range_entry = EraseWidget(work_lenrange_frame, width=5)
 
     letter_checkbutton = ClassicCheckButton(master=other_frame, text='Буквы', variable=allow_letter, width=21)
-    gr_letter_checkbutton = ClassicCheckButton(master=other_frame, text='Большие буквы', variable=allow_letter, width=21)
-    sm_letter_checkbutton = ClassicCheckButton(master=other_frame, text='Маленькие буквы', variable=allow_letter, width=21)
-    number_checkbutton = ClassicCheckButton(master=other_frame, text='Числа', variable=allow_letter, width=22)
-    other_checkbutton = ClassicCheckButton(master=other_frame, text='Остальные', variable=allow_letter, width=22)
+    gr_letter_checkbutton = ClassicCheckButton(master=other_frame, text='Большие буквы', variable=allow_gr_letter, width=21)
+    sm_letter_checkbutton = ClassicCheckButton(master=other_frame, text='Маленькие буквы', variable=allow_sm_letter, width=21)
+    number_checkbutton = ClassicCheckButton(master=other_frame, text='Числа', variable=allow_number, width=22)
+    other_checkbutton = ClassicCheckButton(master=other_frame, text='Остальные', variable=allow_other, width=22)
     leave_button = ClassicButton(master=other_frame, text='Выйти', width=20)
 
     def place(self):

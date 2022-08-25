@@ -18,4 +18,10 @@ class SetUI(UI):
                 packing_portals_list[i][j].grid(column=i, row=j, padx=2, pady=1)
         SetUI.leave_button.pack()
 
+    def place_forget(self):
+        SetUI.main_frame.pack_forget()
+        SetUI.leave_button.pack_forget()
+
+
+
 
