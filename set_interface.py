@@ -22,6 +22,6 @@ class SetUI(UI):
         SetUI.main_frame.pack_forget()
         SetUI.leave_button.pack_forget()
 
-
+settings_interface = SetUI()
 
 
