@@ -54,7 +54,22 @@ class CheckUI(UI):
     sm_letter_checkbutton = ClassicCheckButton(master=other_frame, text='Маленькие буквы', variable=allow_sm_letter, width=21)
     number_checkbutton = ClassicCheckButton(master=other_frame, text='Числа', variable=allow_number, width=22)
     other_checkbutton = ClassicCheckButton(master=other_frame, text='Остальные', variable=allow_other, width=22)
+    set_default_button = ClassicButton(master=other_frame, text='Сброс настроек', width=20)
+    set_gen_settings_button = ClassicButton(master=other_frame, text='Инициализация', width=20)
     leave_button = ClassicButton(master=other_frame, text='Выйти', width=20)
+
+    def __init__(self):
+        super().__init__()
+        self.widget_list = [CheckUI.main_frame, CheckUI.itog_frame, CheckUI.add_pas_storage_button, CheckUI.check_password_button,
+                            CheckUI.first_frame, CheckUI.second_frame, CheckUI.add_symbols_button, CheckUI.delete_symbols_button,
+                            CheckUI.stay_symbols_button, CheckUI.get_list_button, CheckUI.letter_checkbutton, CheckUI.gr_letter_checkbutton,
+                            CheckUI.sm_letter_checkbutton, CheckUI.number_checkbutton, CheckUI.other_checkbutton, CheckUI.leave_button,
+                            CheckUI.work_symbols_frame, CheckUI.select_symbolbet_frame, CheckUI.work_lenrange_frame,
+                            CheckUI.allowed_symbolbet_radiobutton, CheckUI.required_symbolbet_radiobutton,
+                            CheckUI.select_range_button, CheckUI.get_range_button, CheckUI.select_range_entry,
+                            CheckUI.get_range_entry, CheckUI.add_symbols_entry, CheckUI.delete_symbols_entry,
+                            CheckUI.stay_symbols_entry, CheckUI.get_list_entry, CheckUI.check_password_entry,
+                            CheckUI.other_frame, CheckUI.settings_frame, CheckUI.set_default_button, CheckUI.set_gen_settings_button]
 
     def place(self):
         CheckUI.main_frame.pack()
@@ -74,8 +89,8 @@ class CheckUI(UI):
         first_frame_list = [
             [[CheckUI.add_symbols_button, CheckUI.delete_symbols_button, CheckUI.stay_symbols_button, CheckUI.get_list_button],
              [CheckUI.add_symbols_entry, CheckUI.delete_symbols_entry, CheckUI.stay_symbols_entry, CheckUI.get_list_entry]],
-            [[CheckUI.letter_checkbutton, CheckUI.gr_letter_checkbutton, CheckUI.sm_letter_checkbutton],
-              [CheckUI.number_checkbutton, CheckUI.other_checkbutton, CheckUI.leave_button]]]
+            [[CheckUI.letter_checkbutton, CheckUI.gr_letter_checkbutton, CheckUI.sm_letter_checkbutton, CheckUI.leave_button],
+              [CheckUI.number_checkbutton, CheckUI.other_checkbutton, CheckUI.set_default_button, CheckUI.set_gen_settings_button]]]
 
         for elem_list in first_frame_list:
              for i in range(len(elem_list)):

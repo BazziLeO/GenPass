@@ -58,6 +58,8 @@ class GenUI(UI):
     number_checkbutton = ClassicCheckButton(master=other_frame, text='Числа', variable=select_number, width=22)
     other_checkbutton = ClassicCheckButton(master=other_frame, text='Остальные', variable=select_other, width=22)
     settings_leave_button = ClassicButton(master=other_frame, text='Выйти', width=20)
+    set_default_button = ClassicButton(master=other_frame, text='Сброс Настроек', width=20)
+    set_checkpas_settings_button = ClassicButton(master=other_frame, text='Инициализация', width=20)
 
     def __init__(self):
         super().__init__()
@@ -67,7 +69,10 @@ class GenUI(UI):
                             GenUI.stay_symbols_button, GenUI.get_list_button, GenUI.add_symbols_entry,
                             GenUI.delete_symbols_entry, GenUI.stay_symbols_entry, GenUI.get_list_entry,
                             GenUI.letter_checkbutton, GenUI.gr_letter_checkbutton, GenUI.sm_letter_checkbutton,
-                            GenUI.number_checkbutton, GenUI.other_checkbutton, GenUI.settings_leave_button]
+                            GenUI.number_checkbutton, GenUI.other_checkbutton, GenUI.settings_leave_button,
+                            GenUI.usual_symbolbet_radiobutton, GenUI.required_symbolbet_radiobutton, GenUI.select_range_button, GenUI.get_range_button,
+                            GenUI.select_range_entry, GenUI.get_range_entry, GenUI.select_symbolbet_frame,
+                            GenUI.work_lenrange_frame, GenUI.set_checkpas_settings_button, GenUI.set_default_button]
 
     def place(self):
         GenUI.itog_frame.pack()
@@ -85,8 +90,8 @@ class GenUI(UI):
         first_frame_list = [
             [[GenUI.add_symbols_button, GenUI.delete_symbols_button, GenUI.stay_symbols_button, GenUI.get_list_button],
              [GenUI.add_symbols_entry, GenUI.delete_symbols_entry, GenUI.stay_symbols_entry, GenUI.get_list_entry]],
-            [[GenUI.letter_checkbutton, GenUI.gr_letter_checkbutton, GenUI.sm_letter_checkbutton],
-             [GenUI.number_checkbutton, GenUI.other_checkbutton, GenUI.settings_leave_button]]]
+            [[GenUI.letter_checkbutton, GenUI.gr_letter_checkbutton, GenUI.sm_letter_checkbutton, GenUI.settings_leave_button],
+             [GenUI.number_checkbutton, GenUI.other_checkbutton, GenUI.set_default_button, GenUI.set_checkpas_settings_button]]]
 
         for elem_list in first_frame_list:
             for i in range(len(elem_list)):

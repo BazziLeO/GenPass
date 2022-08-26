@@ -1,6 +1,7 @@
 from function_generator import *
 from generator_interface import *
 from mainmenu_interface import *
+from checkpas_interface import *
 
 
 def select_translation(translation_pairs, language='russian'):
@@ -139,9 +140,11 @@ def stay_other():
     else:
         symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'other')))
 
+
 def automatically_update_list():
     if gen_interface.get_list_entry.get() != '':
         get_list()
+
 
 def get_list():
     def logic_get_list(example_symbolbet):
@@ -151,6 +154,25 @@ def get_list():
         logic_get_list(symbolbet)
     elif select_symbolbet_action.get() == 2:
         logic_get_list(required_symbolbet)
+
+
+def set_standart():
+    symbolbet.delete_symbols(split(symbolbet.get()))
+    symbolbet.add_symbols(split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*'))
+    symbolbet.delete_black_symbols(split(symbolbet.get_black()))
+    symbolbet.update_reserve()
+    required_symbolbet.delete_symbols(split(required_symbolbet.get()))
+    range_len_pas.set()
+    automatically_update_list()
+
+def set_checkpas_settings():
+    symbolbet.delete_symbols(split(symbolbet.get()))
+    required_symbolbet.delete_symbols(split(required_symbolbet.get()))
+    symbolbet.delete_black_symbols(split(symbolbet.get_black()))
+    symbolbet.add_symbols(split(allowed_symbolbet.get()))
+    required_symbolbet.add_symbols(split(required_check_symbolbet.get()))
+    symbolbet.add_black_symbols(split(allowed_symbolbet.get_black()))
+    range_len_pas.set(len_checkpas_range.get()[0], len_checkpas_range.get()[1])
 
 
 def settings_window_leave():
@@ -170,5 +192,6 @@ gen_interface.gr_letter_checkbutton['command'] = stay_gr_letters
 gen_interface.sm_letter_checkbutton['command'] = stay_sm_letters
 gen_interface.number_checkbutton['command'] = stay_numbers
 gen_interface.other_checkbutton['command'] = stay_other
-
+gen_interface.set_default_button['command'] = set_standart
 gen_interface.settings_leave_button['command'] = settings_window_leave
+gen_interface.set_checkpas_settings_button['command'] = set_checkpas_settings

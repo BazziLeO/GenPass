@@ -1,6 +1,7 @@
 from function_generator import *
 from checkpas_interface import *
 from mainmenu_interface import *
+from generator_interface import *
 
 
 def check_password():
@@ -144,6 +145,26 @@ def leave():
     check_interface.place_forget()
     mmenu_interface.place()
 
+def set_standart():
+    allowed_symbolbet.delete_symbols(split(allowed_symbolbet.get()))
+    allowed_symbolbet.add_symbols(split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*'))
+    allowed_symbolbet.delete_black_symbols(split(allowed_symbolbet.get_black()))
+    allowed_symbolbet.update_reserve()
+    required_check_symbolbet.delete_symbols(split(required_check_symbolbet.get()))
+    len_checkpas_range.set()
+    automatically_update_list()
+
+
+def set_generator_settings():
+    allowed_symbolbet.delete_symbols(split(allowed_symbolbet.get()))
+    required_check_symbolbet.delete_symbols(split(required_check_symbolbet.get()))
+    allowed_symbolbet.delete_black_symbols(split(allowed_symbolbet.get_black()))
+    allowed_symbolbet.add_symbols(split(symbolbet.get()))
+    required_check_symbolbet.add_symbols(split(required_symbolbet.get()))
+    allowed_symbolbet.add_black_symbols(split(symbolbet.get_black()))
+    len_checkpas_range.set(range_len_pas.get()[0], range_len_pas.get()[1])
+
+
 check_interface.check_password_button['command'] = check_password
 check_interface.add_symbols_button['command'] = add_symbols
 check_interface.delete_symbols_button['command'] = delete_symbols
@@ -156,5 +177,6 @@ check_interface.gr_letter_checkbutton['command'] = stay_gr_letters
 check_interface.sm_letter_checkbutton['command'] = stay_sm_letters
 check_interface.number_checkbutton['command'] = stay_numbers
 check_interface.other_checkbutton['command'] = stay_other
-
+check_interface.set_default_button['command'] = set_standart
+check_interface.set_gen_settings_button['command'] = set_generator_settings
 check_interface.leave_button['command'] = leave

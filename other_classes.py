@@ -29,6 +29,9 @@ class Symbolbet:
         return 'Символы успешно удалены'
 
     def stay_symbols(self, symbol_list):
+        for e in symbol_list:
+            if self.symbolbet.count(e) == 0:
+                return f'Символ "{e}" отсутствует!'
         for e in self.symbolbet:
             if symbol_list.count(e) == 0:
                 self.symbolbet = change_symbol(self.symbolbet, e, '')
@@ -59,10 +62,10 @@ class RangeLen:
         self.min_len = int(min_len)
         self.max_len = int(max_len)
 
-    def set(self, min_len=10, max_len=20):
-        if not (min_len.isdigit() and max_len.isdigit()):
+    def set(self, min_len='10', max_len='20'):
+        if not (str(min_len).isdigit() and str(max_len).isdigit()):
             return 'Являются ли ваши числа - числами?'
-        elif min_len > max_len:
+        elif int(min_len) > int(max_len):
             return 'Первое число всегда меньше чем второе'
         else:
             self.min_len, self.max_len = int(min_len), int(max_len)
@@ -79,41 +82,8 @@ class UI:
     def __init__(self):
         self.widget_list = []
 
-    def set_dark(self):
-        for element in self.widget_list:
-            if type(element).__name__ == 'LabelFrame':
-                element.config(fg='white', bg='gray10')
-            elif type(element).__name__ == 'Frame':
-                element.config(bg='gray10')
-            elif type(element).__name__ == 'ClassicButton':
-                element.config(fg='white', activeforeground='white', bg='gray21', activebackground='gray20')
-            elif type(element).__name__ == 'ClassicLabel':
-                element.config(fg='white', bg='gray10')
-            elif type(element).__name__ == 'ClassicEntry':
-                element.config(fg='white', bg='gray19', insertbackground='white')
-            elif type(element).__name__ == 'ClassicRadioButton' and 'ClassicCheckButton':
-                element.config(fg='white', activeforeground='white', bg='gray10', activebackground='gray10',
-                               selectcolor='gray7')
-            elif type(element).__name__ == 'EraseWidget':
-                pass
-        root.config(bg='gray10')
-
-    def set_white(self):
-        for element in self.widget_list:
-            if type(element).__name__ == 'LabelFrame':
-                element.config(fg='black', bg='gray94')
-            elif type(element).__name__ == 'Frame':
-                element.config(bg='gray94')
-            elif type(element).__name__ == 'ClassicButton':
-                element.config(fg='black', bg='gray94')
-            elif type(element).__name__ == 'ClassicLabel':
-                element.config(fg='black', bg='gray94')
-            elif type(element).__name__ == 'ClassicEntry':
-                element.config(fg='black', bg='white', insertbackground='black')
-            elif type(element).__name__ == 'ClassicRadioButton' or 'ClassicCheckButton':
-                element.config(fg='black', activeforeground='black', bg='gray94', activebackground='gray94', selectcolor='white')
-        root.config(bg='gray94')
-
+    def get_widgets(self):
+        return self.widget_list
 
 
 

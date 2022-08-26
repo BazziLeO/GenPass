@@ -44,6 +44,9 @@ class EraseWidget:
     def get(self):
         return self.eraseentry.get()
 
+    def get_widgets(self):
+        return [self.frame, self.eraseentry, self.erasebutton]
+
     def delete(self, index):
         self.eraseentry.delete(index, END)
 

@@ -13,6 +13,12 @@ class MainUI(UI):
     portal_settings_button = ClassicButton(master=second_frame, text='Настройки', width=14)
     portal_leave_button = ClassicButton(master=second_frame, text='Выйти', width=14, command=quit)
 
+    def __init__(self):
+        super().__init__()
+        self.widget_list = [MainUI.main_frame, MainUI.portal_savebox_button, MainUI.first_frame,
+                            MainUI.portal_generatepas_button, MainUI.portal_checkpas_button, MainUI.second_frame,
+                            MainUI.portal_aboutus_button, MainUI.portal_settings_button, MainUI.portal_leave_button]
+
     def place(self):
         MainUI.main_frame.place(anchor=CENTER, rely=0.4, relx=0.48125)
         MainUI.portal_savebox_button.pack(pady=2)
@@ -27,7 +33,7 @@ class MainUI(UI):
     def place_forget(self):
         MainUI.main_frame.place_forget()
 
-print('Hellp world!')
+
 mmenu_interface = MainUI()
 
 
