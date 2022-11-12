@@ -93,51 +93,51 @@ def get_range():
 
 
 def stay_letters():
-    if select_letter.get():
+    if select_letter.get() and gen_interface.letter_checkbutton['state'] == NORMAL:
         symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'letters')))
         gen_interface.gr_letter_checkbutton['state'] = NORMAL
         gen_interface.sm_letter_checkbutton['state'] = NORMAL
-    else:
+    elif not select_letter.get() and gen_interface.letter_checkbutton['state'] == NORMAL:
         symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'letters')))
         gen_interface.gr_letter_checkbutton['state'] = DISABLED
         gen_interface.sm_letter_checkbutton['state'] = DISABLED
 
 
 def stay_sm_letters():
-    if select_sm_letter.get():
+    if select_sm_letter.get() and gen_interface.sm_letter_checkbutton['state'] == NORMAL:
         symbolbet.delete_black_symbols(
             split(selection_letters(only_type_symbols(symbolbet.get_black(), 'letters'), 'small_letters')))
         if select_gr_letter.get():
             gen_interface.letter_checkbutton['state'] = NORMAL
-    else:
+    elif not select_sm_letter.get() and gen_interface.sm_letter_checkbutton['state'] == NORMAL:
         symbolbet.add_black_symbols(
             split(selection_letters(only_type_symbols(symbolbet.get(), 'letters'), 'small_letters')))
         gen_interface.letter_checkbutton['state'] = DISABLED
 
 
 def stay_gr_letters():
-    if select_gr_letter.get():
+    if select_gr_letter.get() and gen_interface.gr_letter_checkbutton['state'] == NORMAL:
         symbolbet.delete_black_symbols(
             split(selection_letters(only_type_symbols(symbolbet.get_black(), 'letters'), 'great_letters')))
         if select_sm_letter.get():
             gen_interface.letter_checkbutton['state'] = NORMAL
-    else:
+    elif not select_gr_letter.get() and gen_interface.gr_letter_checkbutton['state'] == NORMAL:
         symbolbet.add_black_symbols(
             split(selection_letters(only_type_symbols(symbolbet.get(), 'letters'), 'great_letters')))
         gen_interface.letter_checkbutton['state'] = DISABLED
 
 
 def stay_numbers():
-    if select_number.get():
+    if select_number.get() and gen_interface.number_checkbutton['state'] == NORMAL:
         symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'numbers')))
-    else:
+    elif not select_number.get() and gen_interface.number_checkbutton['state'] == NORMAL:
         symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'numbers')))
 
 
 def stay_other():
-    if select_other.get():
+    if select_other.get() and gen_interface.other_checkbutton['state'] == NORMAL:
         symbolbet.delete_black_symbols(split(only_type_symbols(symbolbet.get_black(), 'other')))
-    else:
+    elif not select_other.get() and gen_interface.other_checkbutton['state'] == NORMAL:
         symbolbet.add_black_symbols(split(only_type_symbols(symbolbet.get(), 'other')))
 
 
@@ -164,6 +164,14 @@ def set_standart():
     required_symbolbet.delete_symbols(split(required_symbolbet.get()))
     range_len_pas.set()
     automatically_update_list()
+    select_number.set(1)
+    select_letter.set(1)
+    select_gr_letter.set(1)
+    select_sm_letter.set(1)
+    select_other.set(1)
+    gen_interface.letter_checkbutton['state'] = NORMAL
+    gen_interface.gr_letter_checkbutton['state'] = NORMAL
+    gen_interface.sm_letter_checkbutton['state'] = NORMAL
 
 def set_checkpas_settings():
     symbolbet.delete_symbols(split(symbolbet.get()))
@@ -173,6 +181,16 @@ def set_checkpas_settings():
     required_symbolbet.add_symbols(split(required_check_symbolbet.get()))
     symbolbet.add_black_symbols(split(allowed_symbolbet.get_black()))
     range_len_pas.set(len_checkpas_range.get()[0], len_checkpas_range.get()[1])
+    select_number.set(allow_number.get())
+    select_letter.set(allow_letter.get())
+    select_gr_letter.set(allow_gr_letter.get())
+    select_sm_letter.set(allow_sm_letter.get())
+    select_other.set(allow_other.get())
+    stay_numbers()
+    stay_letters()
+    stay_gr_letters()
+    stay_sm_letters()
+    stay_other()
 
 
 def settings_window_leave():

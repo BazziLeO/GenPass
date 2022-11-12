@@ -10,6 +10,8 @@ allow_other.set(1)
 select_checksymbolbet_action = IntVar()
 select_checksymbolbet_action.set(1)
 
+select_encoding_passwords = IntVar()
+
 allowed_symbolbet = Symbolbet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*')
 required_check_symbolbet = Symbolbet()
 len_checkpas_range = RangeLen()
@@ -39,6 +41,7 @@ class CheckUI(UI):
     stay_symbols_button = ClassicButton(work_symbols_frame, text='Оставить символы')
     add_symbols_button = ClassicButton(work_symbols_frame, text='Добавить символы')
     get_list_button = ClassicButton(work_symbols_frame, text='Показать список')
+    encode_passwords_button = ClassicCheckButton(work_symbols_frame, select_encoding_passwords, text="Закодировать символы")
     delete_symbols_entry = EraseWidget(work_symbols_frame)
     stay_symbols_entry = EraseWidget(work_symbols_frame)
     add_symbols_entry = EraseWidget(work_symbols_frame)
@@ -87,7 +90,8 @@ class CheckUI(UI):
         CheckUI.work_symbols_frame.pack(pady=3)
         CheckUI.other_frame.pack(pady=3)
         first_frame_list = [
-            [[CheckUI.add_symbols_button, CheckUI.delete_symbols_button, CheckUI.stay_symbols_button, CheckUI.get_list_button],
+            [[CheckUI.add_symbols_button, CheckUI.delete_symbols_button, CheckUI.stay_symbols_button, CheckUI.get_list_button,
+              CheckUI.encode_passwords_button],
              [CheckUI.add_symbols_entry, CheckUI.delete_symbols_entry, CheckUI.stay_symbols_entry, CheckUI.get_list_entry]],
             [[CheckUI.letter_checkbutton, CheckUI.gr_letter_checkbutton, CheckUI.sm_letter_checkbutton, CheckUI.leave_button],
               [CheckUI.number_checkbutton, CheckUI.other_checkbutton, CheckUI.set_default_button, CheckUI.set_gen_settings_button]]]

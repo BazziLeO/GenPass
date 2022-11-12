@@ -31,7 +31,7 @@ class GenUI(UI):
     select_symbolbet_frame = LabelFrame(second_frame, text='Выбор действия', font='Helvetica 11')
     work_lenrange_frame = LabelFrame(second_frame, text='Диапазон длины', font='Helvetica 11')
 
-    usual_symbolbet_radiobutton = ClassicRadioButton(master=select_symbolbet_frame, text='Обычные символы',
+    usual_symbolbet_radiobutton = ClassicRadioButton(master=select_symbolbet_frame, text='Допустимые символы',
                                                      variable=select_symbolbet_action, value=1)
     required_symbolbet_radiobutton = ClassicRadioButton(master=select_symbolbet_frame, text='Обязательные символы',
                                                         variable=select_symbolbet_action, value=2)
