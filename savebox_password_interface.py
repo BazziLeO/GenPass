@@ -2,7 +2,7 @@ from widget_classes import *
 from other_classes import *
 
 protect_passwords = IntVar()
-scroll = ScrollList(length=17, scroll="normal")
+scroll = ScrollList(length=17, scroll="circled")
 
 class SaveBoxUI(UI):
     main_frame = Frame()
