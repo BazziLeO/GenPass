@@ -20,7 +20,7 @@ class MainUI(UI):
                             MainUI.portal_aboutus_button, MainUI.portal_settings_button, MainUI.portal_leave_button]
 
     def place(self):
-        MainUI.main_frame.place(anchor=CENTER, rely=0.4, relx=0.48125)
+        MainUI.main_frame.place(anchor=CENTER, rely=0.4, relx=0.495)
         MainUI.portal_savebox_button.pack(pady=2)
         MainUI.first_frame.pack()
         MainUI.portal_generatepas_button.pack(side=LEFT, pady=2, padx=2)

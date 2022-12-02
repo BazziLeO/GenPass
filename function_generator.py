@@ -1,15 +1,25 @@
 # Functions
-
-
-
+import random
 from random import randint as r
 from random import shuffle
+
+def add_symbols_in_random(word="", symbol=" ", chance=34):
+    result = ""
+    for e in word:
+        result += e
+        if random.randint(1, 100) <= chance:
+            result += symbol*r(1, 3)
+    return result
+
+
+
 
 def shuffle_symbols(string):
     string_list = split(string)
     shuffle(string_list)
     string = ''.join(string_list)
     return string
+
 
 def select_symbols(string, n=1):
     result = ''
@@ -79,11 +89,7 @@ def only_type_symbols(word, argument='normal'):
 def split(word):
     result = []
     for e in word:
-        result += e
+        result.append(e)
     return result
 
 
-
-
-def do_nothing():
-    pass

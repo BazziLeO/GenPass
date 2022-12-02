@@ -4,4 +4,4 @@ from function_generator import *
 
 root = Tk()
 root.title('Genpass | Alpha')
-root.geometry('800x500')
+root.geometry('880x500')

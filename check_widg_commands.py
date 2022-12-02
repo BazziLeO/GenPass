@@ -190,6 +190,7 @@ def set_generator_settings():
     stay_sm_letters()
     stay_other()
 
+
 def encode_passwords():
     if select_encoding_passwords.get():
         CheckUI.check_password_entry.show("*")

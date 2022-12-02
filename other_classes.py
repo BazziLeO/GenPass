@@ -4,11 +4,11 @@ from root_description import *
 class Symbolbet:
     def __init__(self, symbolbet=''):
         self.symbolbet = symbolbet
-        self.reserve_symbolbet = self.symbolbet
+        self.__reserve_symbolbet = self.symbolbet
         self.black_string = ''
 
     def update_reserve(self):
-        self.reserve_symbolbet = self.symbolbet
+        self.__reserve_symbolbet = self.symbolbet
 
     def add_symbols(self, symbol_list):
         for symbol in symbol_list:
@@ -18,7 +18,7 @@ class Symbolbet:
                 return {f'Символ "{symbol}" состоит в черном списке!': f'Symbol "{symbol}" is in black list!'}
             elif self.symbolbet.count(symbol) > 0 or symbol_list.count(symbol) > 1:
                 return {
-                    'Нельзя, чтобы было несколько символов в symbolbet': 'Two or more similar symbols arent in symbolbet'}
+                    'Нельзя, чтобы было несколько символов в symbolbet': 'Two or more similar symbols cant be in symbolbet'}
             else:
                 self.symbolbet += symbol
         return {'Символы успешно добавлены': 'Symbols correctly added'}
@@ -96,62 +96,76 @@ class Color:
         return self.color
 
 
-class Storage:
-    def __init__(self, dictionary_of_elements):
-        pass
-
-    def add(self, name, description):
-        pass
-
-    def delete(self, index):
-        pass
-
-    def get(self, index):
-        pass
-
-
-class ScrollList:
+class ScrollList:  # index = {0, 1... length-1}
     def __init__(self, length=0, scroll="usual"):
         self.scroll = scroll
         self.length = length
-        if self.length == 0:
-            self.index = 0
-        else:
-            self.index = 1
+        self.index = 0
 
     def turn_right(self):
-        if self.length > 0:
-            if self.index < self.length:
-                self.index += 1
-            elif self.scroll == "circled" and self.index == self.length:
-                self.index = 1
+        if self.index < self.length-1:
+            self.index += 1
+        elif self.scroll == "circled" and self.index == self.length-1:
+            self.index = 0
 
     def turn_left(self):
-        if self.length > 0:
-            if self.index > 1:
-                self.index -= 1
-            elif self.scroll == "circled" and self.index < 2:
+        if self.index > 0:
+            self.index -= 1
+        elif self.scroll == "circled" and self.index == 0:
+            if self.length > 0:
+                self.index = self.length-1
+            else:
                 self.index = self.length
 
-    def set_index(self, new_index):
+    def set_index(self, new_index, type="non-by-user"):
         try:
-            new_index = int(new_index)
+            if type == "non-by-user":
+                new_index = int(new_index)
+            elif type == "by user":
+                new_index = int(new_index)-1
         except:
             return "Error"
-        if self.length > 0:
-            if 0 < new_index < self.length + 1:
-                self.index = new_index
+        if -1 < new_index < self.length:
+            self.index = new_index
 
-    def get(self, argument):
-        if argument == "index":
-            return self.index
-        elif argument == "length":
-            return self.length
+    def set_length(self, new_length):
+        try:
+            self.length = int(new_length)
+        except:
+            return "Error"
 
 
-class UI:
-    def __init__(self):
-        self.widget_list = []
+class MyDict:
+    def __init__(self, key_list=[], value_list=[]):
+        self.key_list = []
+        self.value_list = []
+        self.set_new_dict(key_list=key_list, value_list=value_list)
 
-    def get_widgets(self):
-        return self.widget_list
+    def add(self, key="", value=""):
+        self.key_list.append(key)
+        self.value_list.append(value)
+
+    def delete(self, index):
+        self.key_list.pop(index)
+        self.value_list.pop(index)
+
+    def set_new_dict(self, key_list=[], value_list=[]):
+        if len(key_list) == len(value_list):
+            self.key_list = []
+            self.value_list = []
+            for i in range(len(key_list)):
+                self.add(key_list[i], value_list[i])
+
+    def set_by_index(self, key="False", value="False", index=0):
+        if key != "False":
+            self.key_list[index] = key
+        if value != "False":
+            self.value_list[index] = value
+
+    def length(self):
+        return len(self.value_list)
+
+
+
+
+
