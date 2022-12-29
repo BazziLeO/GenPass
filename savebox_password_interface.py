@@ -257,10 +257,7 @@ class StigmaUI(UI):
 
         self.stigma_place_frame = Frame(self)
 
-        self.stigma_list = [
-            [Stigma(self.stigma_place_frame, text="Пример1"), Stigma(self.stigma_place_frame),
-             Stigma(self.stigma_place_frame),
-             Stigma(self.stigma_place_frame)]]
+        self.stigma_list = [[Stigma(self.stigma_place_frame, text="Метка 1")]]
         self.operational_stigma_list = [e for e in self.stigma_list]
         self.scroll_stigma_list = ScrollList(length=len(self.operational_stigma_list[
                                                             settings_interface.scroll_password_box.index]),
