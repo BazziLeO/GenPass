@@ -3,6 +3,7 @@ import random
 from random import randint as r
 from random import shuffle
 
+
 def add_symbols_in_random(word="", symbol=" ", chance=34):
     result = ""
     for e in word:
@@ -10,8 +11,6 @@ def add_symbols_in_random(word="", symbol=" ", chance=34):
         if random.randint(1, 100) <= chance:
             result += symbol*r(1, 3)
     return result
-
-
 
 
 def shuffle_symbols(string):

@@ -2,9 +2,9 @@ from root_description import *
 from other_classes import *
 
 
-class UI(Frame):
-    def __init__(self, master=None):
-        super().__init__(master=master)
+class UI(LabelFrame):
+    def __init__(self, master=None, text=None, font="Helvetica 13"):
+        super().__init__(master=master, text=text, font=font)
         self.widget_list = []
 
     def get_widgets(self):
@@ -67,23 +67,31 @@ class EraseWidget(Frame):
 
 
 class Stigma(Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, text="I am Stigma!"):
         super().__init__(master=master)
         self.color = Color(red=10, blue=100, green=100)
-        self.color_point = ClassicLabel(master=self, text="●")
-        self.stigma_name = ClassicLabel(master=self, text="Hello world!!!")
+        self.color_point = ClassicLabel(master=self, text="●", font="Helvetica 18")
+        self.stigma_name = ClassicLabel(master=self, text=text)
         self.color_point.pack(side=LEFT)
         self.stigma_name.pack(side=LEFT)
         self.config()
 
     def change_color(self, green, blue, red):
         self.color = Color(red=red, blue=blue, green=green)
-        self.color_point["fg"] = self.color.get()
+        self.color_point["fg"] = self.color.get("color")
 
     def change_name(self, new_name):
         self.stigma_name["text"] = new_name
 
+    def get(self, arg):
+        if arg == "color":
+            return self.color
+        elif arg == "name":
+            return self.stigma_name["text"]
+
     def get_widgets(self):
         return [self, self.color_point, self.stigma_name]
+
+
 
 

@@ -92,8 +92,16 @@ class Color:
         self.green = green
         self.color = f'#{red:02x}{green:02x}{blue:02x}'
 
-    def get(self):
-        return self.color
+    def get(self, arg="color"):
+        if arg == "color":
+            return self.color
+        elif arg == "green":
+            print(self.green + self.green)
+            return self.green
+        elif arg == "blue":
+            return self.blue
+        elif arg == "red":
+            return self.red
 
 
 class ScrollList:  # index = {0, 1... length-1}
@@ -103,34 +111,38 @@ class ScrollList:  # index = {0, 1... length-1}
         self.index = 0
 
     def turn_right(self):
-        if self.index < self.length-1:
-            self.index += 1
-        elif self.scroll == "circled" and self.index == self.length-1:
-            self.index = 0
+        self.set_index(self.index + 1)
 
     def turn_left(self):
-        if self.index > 0:
-            self.index -= 1
-        elif self.scroll == "circled" and self.index == 0:
-            if self.length > 0:
-                self.index = self.length-1
-            else:
-                self.index = self.length
+        self.set_index(self.index - 1)
 
     def set_index(self, new_index, type="non-by-user"):
+
         try:
-            if type == "non-by-user":
+            if type == "by-user":
+                new_index = int(new_index) - 1
+            elif type == "non-by-user":
                 new_index = int(new_index)
-            elif type == "by user":
-                new_index = int(new_index)-1
+
+            if -1 < new_index < self.length:
+                self.index = new_index
+            elif self.scroll == "circled":
+                if 0 > new_index:
+                    self.index = self.length - 1
+                elif self.length - 1 < new_index:
+                    self.index = 0
+            if self.length == 0:
+                self.index = 0
         except:
             return "Error"
-        if -1 < new_index < self.length:
-            self.index = new_index
 
     def set_length(self, new_length):
         try:
             self.length = int(new_length)
+            if self.index >= self.length != 0:
+                self.index = self.length - 1
+            elif self.length == 0:
+                self.index = 0
         except:
             return "Error"
 
@@ -164,8 +176,3 @@ class MyDict:
 
     def length(self):
         return len(self.value_list)
-
-
-
-
-
