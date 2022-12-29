@@ -1,7 +1,9 @@
+import savebox_password_interface
 from function_generator import *
 from generator_interface import *
 from mainmenu_interface import *
 from checkpas_interface import *
+from savebox_password_interface import *
 
 
 def select_translation(translation_pairs, language='russian'):
@@ -35,6 +37,12 @@ def generate():
             result += select_symbols(symbolbet.get(), range_len_pas.get()[1] - len(req_symbol_string))
     gen_interface.generate_pas_entry.delete(0, END)
     gen_interface.generate_pas_entry.insert(0, result)
+
+def send_to_savebox():
+    gen_interface.place_forget()
+    savebox_password_interface.settings_interface.add_password()
+    savebox_password_interface.main_interface.place_ofpassword_entry.insert(0, gen_interface.generate_pas_entry.get())
+    savebox_password_interface.savebox_password_frame.pack()
 
 
 def delete_symbols():
@@ -198,6 +206,7 @@ def settings_window_leave():
     mmenu_interface.place()
 
 
+
 gen_interface.generate_pas_button['command'] = generate
 gen_interface.add_symbols_button['command'] = add_symbols
 gen_interface.delete_symbols_button['command'] = delete_symbols
@@ -213,3 +222,4 @@ gen_interface.other_checkbutton['command'] = stay_other
 gen_interface.set_default_button['command'] = set_standart
 gen_interface.settings_leave_button['command'] = settings_window_leave
 gen_interface.set_checkpas_settings_button['command'] = set_checkpas_settings
+gen_interface.add_pas_storage_button["command"] = send_to_savebox

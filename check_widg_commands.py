@@ -1,7 +1,9 @@
+import savebox_password_interface
 from function_generator import *
 from checkpas_interface import *
 from mainmenu_interface import *
 from generator_interface import *
+
 
 
 def check_password():
@@ -25,6 +27,13 @@ def check_password():
                 result = f'Символа "{e}" нету в разрешенном списке!'
                 break
     messagebox.showinfo("Результат", result)
+
+
+def send_to_savebox():
+    check_interface.place_forget()
+    savebox_password_interface.settings_interface.add_password()
+    savebox_password_interface.main_interface.place_ofpassword_entry.insert(0, check_interface.check_password_entry.get())
+    savebox_password_interface.savebox_password_frame.pack()
 
 
 def delete_symbols():
@@ -214,3 +223,4 @@ check_interface.set_default_button['command'] = set_standart
 check_interface.set_gen_settings_button['command'] = set_generator_settings
 check_interface.leave_button['command'] = leave
 check_interface.encode_passwords_button["command"] = encode_passwords
+check_interface.add_pas_storage_button["command"] = send_to_savebox
