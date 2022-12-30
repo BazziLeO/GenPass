@@ -107,6 +107,7 @@ class SetUI(UI):
         if self.operational_password_box.length() == 2:
             self.delete_password_button["state"] = DISABLED
         self.operational_password_box.delete(self.operational_password_box.length() - 1)
+        self.scroll_password_box.set_length(self.operational_password_box.length())
         stigma_interface.operational_stigma_list.pop(self.operational_password_box.length() - 1)
         stigma_interface.stigma_placed()
         update_passwordbox_information()
@@ -187,7 +188,13 @@ class SetUI(UI):
 
     def protect_passwords(self):
         blocked_list = [main_interface.place_ofpassword_entry, main_interface.place_ofdescription_text,
-                        self.add_password_button, self.delete_password_button, stigma_interface.add_stigma_button]
+                        main_interface.turn_toleft_button, main_interface.turn_toright_button,
+                        self.add_password_button, self.delete_password_button, self.search_bypassword_button,
+                        self.search_bypassword_entry, self.break_search_bypassword_button,
+                        self.search_bydescription_button, self.search_bydescription_entry,
+                        self.break_search_bydescr_button, self.search_bynumber_button, self.search_bynumber_entry,
+                        stigma_interface.add_stigma_button, stigma_interface.go_up_button,
+                        stigma_interface.go_down_button]
 
         if self.protect_passwords_variable.get():
             new_key_list, new_value_list = [], []
@@ -300,6 +307,8 @@ class StigmaUI(UI):
         self.stigma_settings_frame.grid_forget()
 
     def stigma_placed(self):
+        print(settings_interface.scroll_password_box.index)
+        print(self.operational_stigma_list[settings_interface.scroll_password_box.index])
         stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
         for i in range(len(stigma_list)):
             stigma_list[i].grid(column=0, row=i)
