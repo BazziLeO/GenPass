@@ -69,12 +69,11 @@ class EraseWidget(Frame):
 class Stigma(Frame):
     def __init__(self, master=None, text="I am Stigma!"):
         super().__init__(master=master)
-        self.color = Color(red=10, blue=100, green=100)
+        self.color = Color(red=0, blue=0, green=0)
         self.color_point = ClassicLabel(master=self, text="●", font="Helvetica 18")
         self.stigma_name = ClassicLabel(master=self, text=text)
         self.color_point.pack(side=LEFT)
         self.stigma_name.pack(side=LEFT)
-        self.config()
 
     def change_color(self, green, blue, red):
         self.color = Color(red=red, blue=blue, green=green)

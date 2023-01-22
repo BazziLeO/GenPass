@@ -1,5 +1,5 @@
-import savebox_password_interface
-from function_generator import *
+import savebox_password_program
+from based_functions import *
 from checkpas_interface import *
 from mainmenu_interface import *
 from generator_interface import *
@@ -31,9 +31,9 @@ def check_password():
 
 def send_to_savebox():
     check_interface.place_forget()
-    savebox_password_interface.settings_interface.add_password()
-    savebox_password_interface.main_interface.place_ofpassword_entry.insert(0, check_interface.check_password_entry.get())
-    savebox_password_interface.savebox_password_frame.pack()
+    savebox_password_program.settings_interface.add_password()
+    savebox_password_program.main_interface.place_ofpassword_entry.insert(0, check_interface.check_password_entry.get())
+    savebox_password_program.savebox_password_frame.pack()
 
 
 def delete_symbols():

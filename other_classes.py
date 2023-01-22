@@ -41,7 +41,7 @@ class Symbolbet:
     def add_black_symbols(self, list_of_symbols):
         for s in list_of_symbols:
             if self.black_string.count(s) > 0 or list_of_symbols.count(s) > 1:
-                return 'Нельзя, чтобы было несколько символов в black string'
+                return 'Нельзя, чтобы было несколько символов в чёрном списке!'
             else:
                 self.symbolbet = change_symbol(self.symbolbet, s, '')
                 self.black_string += s
@@ -96,55 +96,11 @@ class Color:
         if arg == "color":
             return self.color
         elif arg == "green":
-            print(self.green + self.green)
             return self.green
         elif arg == "blue":
             return self.blue
         elif arg == "red":
             return self.red
-
-
-class ScrollList:  # index = {0, 1... length-1}
-    def __init__(self, length=0, scroll="usual"):
-        self.scroll = scroll
-        self.length = length
-        self.index = 0
-
-    def turn_right(self):
-        self.set_index(self.index + 1)
-
-    def turn_left(self):
-        self.set_index(self.index - 1)
-
-    def set_index(self, new_index, type="non-by-user"):
-
-        try:
-            if type == "by-user":
-                new_index = int(new_index) - 1
-            elif type == "non-by-user":
-                new_index = int(new_index)
-
-            if -1 < new_index < self.length:
-                self.index = new_index
-            elif self.scroll == "circled":
-                if 0 > new_index:
-                    self.index = self.length - 1
-                elif self.length - 1 < new_index:
-                    self.index = 0
-            if self.length == 0:
-                self.index = 0
-        except:
-            return "Error"
-
-    def set_length(self, new_length):
-        try:
-            self.length = int(new_length)
-            if self.index >= self.length != 0:
-                self.index = self.length - 1
-            elif self.length == 0:
-                self.index = 0
-        except:
-            return "Error"
 
 
 class MyDict:

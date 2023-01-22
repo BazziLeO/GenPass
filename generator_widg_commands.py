@@ -1,9 +1,9 @@
-import savebox_password_interface
-from function_generator import *
+import savebox_password_program
+from based_functions import *
 from generator_interface import *
 from mainmenu_interface import *
 from checkpas_interface import *
-from savebox_password_interface import *
+from savebox_password_program import *
 
 
 def select_translation(translation_pairs, language='russian'):
@@ -38,11 +38,12 @@ def generate():
     gen_interface.generate_pas_entry.delete(0, END)
     gen_interface.generate_pas_entry.insert(0, result)
 
+
 def send_to_savebox():
     gen_interface.place_forget()
-    savebox_password_interface.settings_interface.add_password()
-    savebox_password_interface.main_interface.place_ofpassword_entry.insert(0, gen_interface.generate_pas_entry.get())
-    savebox_password_interface.savebox_password_frame.pack()
+    savebox_password_program.settings_interface.add_password()
+    savebox_password_program.main_interface.place_ofpassword_entry.insert(0, gen_interface.generate_pas_entry.get())
+    savebox_password_program.savebox_password_frame.pack()
 
 
 def delete_symbols():
@@ -52,6 +53,7 @@ def delete_symbols():
         result = example_symbolbet.delete_symbols(list_of_symbols)
         messagebox.showinfo('Результат', result)
         automatically_update_list()
+
     if select_symbolbet_action.get() == 1:
         logic_delete_symbols(symbolbet)
     elif select_symbolbet_action.get() == 2:
@@ -64,11 +66,11 @@ def add_symbols():
         gen_interface.add_symbols_entry.delete(0)
         result = select_translation(example_symbolbet.add_symbols(list_of_symbols))
         messagebox.showinfo('Результат', result)
+
     if select_symbolbet_action.get() == 1:
         logic_add_symbols(symbolbet)
     elif select_symbolbet_action.get() == 2:
         logic_add_symbols(required_symbolbet)
-
 
 
 def stay_symbols():
@@ -158,6 +160,7 @@ def get_list():
     def logic_get_list(example_symbolbet):
         gen_interface.get_list_entry.delete(0)
         gen_interface.get_list_entry.insert(0, divide_word(example_symbolbet.get()))
+
     if select_symbolbet_action.get() == 1:
         logic_get_list(symbolbet)
     elif select_symbolbet_action.get() == 2:
@@ -180,6 +183,7 @@ def set_standart():
     gen_interface.letter_checkbutton['state'] = NORMAL
     gen_interface.gr_letter_checkbutton['state'] = NORMAL
     gen_interface.sm_letter_checkbutton['state'] = NORMAL
+
 
 def set_checkpas_settings():
     symbolbet.delete_symbols(split(symbolbet.get()))
@@ -204,7 +208,6 @@ def set_checkpas_settings():
 def settings_window_leave():
     gen_interface.place_forget()
     mmenu_interface.place()
-
 
 
 gen_interface.generate_pas_button['command'] = generate

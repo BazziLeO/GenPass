@@ -9,7 +9,6 @@ def update_boxes_information():
     stigma_interface.stigma_list = [e for e in stigma_interface.operational_stigma_list]
 
 
-
 def load_boxes_information():
     settings_interface.operational_password_box.set_new_dict(settings_interface.password_box.key_list,
                                                              settings_interface.password_box.value_list)
@@ -17,27 +16,26 @@ def load_boxes_information():
     stigma_interface.operational_stigma_list = [e for e in stigma_interface.stigma_list]
 
 
-
-
 def update_passwordbox_information():
     main_interface.place_ofpassword_entry.delete(0, END)
     main_interface.place_ofdescription_text.delete(0.0, END)
     main_interface.place_ofpassword_entry.insert(0, settings_interface.operational_password_box.key_list[
-        settings_interface.scroll_password_box.index])
+        settings_interface.password_index])
     main_interface.place_ofdescription_text.insert(0.0, settings_interface.operational_password_box.value_list[
-        settings_interface.scroll_password_box.index])
+        settings_interface.password_index])
     main_interface.show_number_of_password_button[
-        "text"] = f"Страница {settings_interface.scroll_password_box.index + 1} из {settings_interface.scroll_password_box.length}"
+        "text"] = f"Страница {settings_interface.password_index + 1} из " \
+                  f"{settings_interface.operational_password_box.length()} "
 
 
 class SetUI(UI):
 
     def __init__(self, master=None, text="Настройки"):  # Description + packing
         super().__init__(master=master, text=text)
+        self.password_index = 0
         self.protect_passwords_variable = IntVar()
         self.password_box = MyDict([""], [""])
         self.operational_password_box = MyDict([""], [""])
-        self.scroll_password_box = ScrollList(length=self.operational_password_box.length(), scroll="circled")
 
         self.settings_frame = LabelFrame(self, text="Настройки", font="Helvetica 12")
 
@@ -67,11 +65,7 @@ class SetUI(UI):
                                                     command=self.search_by_index)
         self.search_bynumber_entry = ClassicEntry(self.search_frame, width=10, font="Helvetica 14")
 
-        self.other_frame = LabelFrame(self, text="Прочее", font="Helvetica 11")
-        self.leave_button = ClassicButton(self.other_frame, text="Выйти", width=13)
-        self.protect_passwords_checkbutton = ClassicCheckButton(self.other_frame, text="Защитить пароли", width=13,
-                                                                variable=self.protect_passwords_variable,
-                                                                command=self.protect_passwords)
+        self.leave_button = ClassicButton(self, text="Выйти", width=13)
 
         self.action_frame.pack()
         self.add_password_button.pack(pady=1, padx=4)
@@ -87,16 +81,24 @@ class SetUI(UI):
         self.search_bynumber_button.grid(column=0, row=2, padx=1, pady=1)
         self.search_bynumber_entry.grid(column=1, row=2, padx=1, pady=1)
 
-        self.other_frame.pack()
-        self.leave_button.pack(side=LEFT, padx=1)
-        self.protect_passwords_checkbutton.pack(side=LEFT, padx=1)
+        self.leave_button.pack(side=LEFT, pady=1)
+
+    def set_new_index(self, new_index, type="non-by-user"):
+        try:
+            if type == "by-user":
+                new_index = int(new_index) - 1
+            elif type == "non-by-user":
+                new_index = int(new_index)
+            if -1 < new_index < self.operational_password_box.length():
+                self.password_index = new_index
+        except:
+            return "Index is not correct!"
 
     def add_password(self):
         self.operational_password_box.add("", "")
         stigma_interface.stigma_placed_forget()
         stigma_interface.operational_stigma_list.append([])
-        self.scroll_password_box.set_length(self.operational_password_box.length())
-        self.scroll_password_box.set_index(self.operational_password_box.length() - 1)
+        self.set_new_index(self.operational_password_box.length() - 1)
         stigma_interface.stigma_placed()
         update_passwordbox_information()
         if self.operational_password_box.length() > 1:
@@ -106,8 +108,7 @@ class SetUI(UI):
         stigma_interface.stigma_placed_forget()
         if self.operational_password_box.length() == 2:
             self.delete_password_button["state"] = DISABLED
-        self.operational_password_box.delete(self.operational_password_box.length() - 1)
-        self.scroll_password_box.set_length(self.operational_password_box.length())
+        self.set_new_index(self.operational_password_box.length() - 1)
         stigma_interface.operational_stigma_list.pop(self.operational_password_box.length() - 1)
         stigma_interface.stigma_placed()
         update_passwordbox_information()
@@ -137,8 +138,7 @@ class SetUI(UI):
             else:
                 e["state"] = NORMAL
         load_boxes_information()
-        self.scroll_password_box.set_length(self.operational_password_box.length())
-        self.scroll_password_box.set_index(0)
+        self.set_new_index(0)
         update_passwordbox_information()
 
     def search_by_password(self):
@@ -154,8 +154,7 @@ class SetUI(UI):
         else:
             for e in disabled_list:
                 e["state"] = DISABLED
-            self.scroll_password_box.set_length(self.operational_password_box.length())
-            self.scroll_password_box.set_index(self.operational_password_box.length() - 1)
+            self.set_new_index(self.operational_password_box.length() - 1)
             update_passwordbox_information()
         stigma_interface.stigma_placed()
 
@@ -173,47 +172,70 @@ class SetUI(UI):
         else:
             for e in disabled_list:
                 e["state"] = DISABLED
-            self.scroll_password_box.set_length(self.operational_password_box.length())
-            self.scroll_password_box.set_index(self.operational_password_box.length() - 1)
+            self.set_new_index(self.operational_password_box.length() - 1)
             update_passwordbox_information()
         stigma_interface.stigma_placed()
-
 
     def search_by_index(self):
         stigma_interface.stigma_placed_forget()
         new_index = self.search_bynumber_entry.get()
-        self.scroll_password_box.set_index(new_index, "by-user")
+        self.set_new_index(new_index, "by-user")
         stigma_interface.stigma_placed()
         update_passwordbox_information()
 
-    def protect_passwords(self):
-        blocked_list = [main_interface.place_ofpassword_entry, main_interface.place_ofdescription_text,
-                        main_interface.turn_toleft_button, main_interface.turn_toright_button,
-                        self.add_password_button, self.delete_password_button, self.search_bypassword_button,
-                        self.search_bypassword_entry, self.break_search_bypassword_button,
-                        self.search_bydescription_button, self.search_bydescription_entry,
-                        self.break_search_bydescr_button, self.search_bynumber_button, self.search_bynumber_entry,
-                        stigma_interface.add_stigma_button, stigma_interface.go_up_button,
-                        stigma_interface.go_down_button]
 
-        if self.protect_passwords_variable.get():
-            new_key_list, new_value_list = [], []
-            update_boxes_information()
-            for e in self.operational_password_box.key_list:
-                new_key_list.append(add_symbols_in_random(word=e, chance=r(51, 97)))
-                new_value_list.append("")
-            self.operational_password_box.set_new_dict(new_key_list, new_value_list)
-            main_interface.place_ofpassword_entry["show"] = "*"
-            for e in blocked_list:
-                e["state"] = DISABLED
-            stigma_interface.stigma_placed_forget()
+class ProtectUI(UI):
+
+    def __init__(self, master=None, text="Входной контроль"):
+        super().__init__(master=master, text=text)
+        self._key_gate = ""
+
+        self.write_key_frame = LabelFrame(self, text="Вход в хранилище", font="Helvetica 12")
+        self.confirm_key_button = ClassicButton(self.write_key_frame, text="Потвердить ключ", width=24,
+                                                command=self.entry_to_savebox)
+        self.write_key_entry = ClassicEntry(self.write_key_frame)
+
+        self.or_label = ClassicLabel(self, text="ИЛИ")
+
+        self.update_key_frame = LabelFrame(self, text="Обновление ключа", font="Helvetica 12")
+        self.inside_frame = Frame(self.update_key_frame)
+        self.check_old_key_label = ClassicLabel(self.inside_frame, text="Старый ключ")
+        self.check_old_key_entry = ClassicEntry(self.inside_frame, width=10)
+        self.check_new_key_label = ClassicLabel(self.inside_frame, text="Новый ключ")
+        self.check_new_key_entry = ClassicEntry(self.inside_frame, width=10)
+        self.confirm_change_button = ClassicButton(self.update_key_frame, text="Потвердить изменения", width=24, command=self.confirm_changes)
+
+        self.write_key_frame.pack(pady=1)
+        self.write_key_entry.pack(padx=2, pady=2)
+        self.confirm_key_button.pack(padx=2, pady=2)
+
+        self.or_label.pack()
+
+        self.update_key_frame.pack(pady=1)
+        self.inside_frame.pack()
+        self.check_old_key_label.grid(column=0, row=0, padx=1, pady=1)
+        self.check_old_key_entry.grid(column=0, row=1, padx=1, pady=1)
+        self.check_new_key_label.grid(column=1, row=0, padx=1, pady=1)
+        self.check_new_key_entry.grid(column=1, row=1, padx=1, pady=1)
+
+        self.confirm_change_button.pack(pady=2)
+
+    def entry_to_savebox(self):
+        if self.write_key_entry.get() == self._key_gate:
+            self.grid_forget()
+            settings_interface.grid(column=0, row=0)
+            main_interface.grid(column=1, row=0)
+            stigma_interface.grid(column=2, row=0)
         else:
-            for e in blocked_list:
-                e["state"] = NORMAL
-            load_boxes_information()
-            main_interface.place_ofpassword_entry["show"] = ""
-            stigma_interface.stigma_placed()
-        update_passwordbox_information()
+            self.grid(column=1, row=0)
+            self.write_key_entry.delete(0, END)
+            self.write_key_entry.insert(0, "Введенный пароль неправилен!")
+
+    def confirm_changes(self):
+        if self.check_old_key_entry.get() == self._key_gate:
+            self._key_gate = self.check_new_key_entry.get()
+
+
 
 
 class MainUI(UI):
@@ -225,7 +247,7 @@ class MainUI(UI):
         self.navigation_frame = Frame(self)
         self.turn_toleft_button = ClassicButton(self.navigation_frame, text="<", width=2, command=self.turn_left)
         self.show_number_of_password_button = ClassicLabel(self.navigation_frame,
-                                                           text=f"Страница {settings_interface.scroll_password_box.index + 1} из {settings_interface.scroll_password_box.length}")
+                                                           text=f"Страница {settings_interface.password_index + 1} из {settings_interface.operational_password_box.length}")
         self.turn_toright_button = ClassicButton(self.navigation_frame, text=">", width=2, command=self.turn_right)
         self.save_new_information_button = ClassicButton(self.navigation_frame, text="Сохранить", width=9,
                                                          command=self.save_password_information)
@@ -241,18 +263,24 @@ class MainUI(UI):
 
     def turn_right(self):
         stigma_interface.stigma_placed_forget()
-        settings_interface.scroll_password_box.turn_right()
+        if settings_interface.password_index == settings_interface.operational_password_box.length() - 1:
+            settings_interface.set_new_index(0)
+        else:
+            settings_interface.set_new_index(settings_interface.password_index + 1)
         stigma_interface.stigma_placed()
         update_passwordbox_information()
 
     def turn_left(self):
         stigma_interface.stigma_placed_forget()
-        settings_interface.scroll_password_box.turn_left()
+        if settings_interface.password_index == 0:
+            settings_interface.set_new_index(settings_interface.operational_password_box.length() - 1)
+        else:
+            settings_interface.set_new_index(settings_interface.password_index - 1)
         stigma_interface.stigma_placed()
         update_passwordbox_information()
 
     def save_password_information(self):
-        index = settings_interface.scroll_password_box.index
+        index = settings_interface.password_index
         password = self.place_ofpassword_entry.get()
         description = self.place_ofdescription_text.get(0.0, END)
         settings_interface.operational_password_box.set_by_index(key=password, value=description, index=index)
@@ -266,9 +294,7 @@ class StigmaUI(UI):
 
         self.stigma_list = [[Stigma(self.stigma_place_frame, text="Метка 1")]]
         self.operational_stigma_list = [e for e in self.stigma_list]
-        self.scroll_stigma_list = ScrollList(length=len(self.operational_stigma_list[
-                                                            settings_interface.scroll_password_box.index]),
-                                             scroll="circled")
+        self.stigma_index = 0
 
         self.stigma_settings_frame = Frame(self.stigma_place_frame)
         self.move_down_button = ClassicButton(self.stigma_settings_frame, text="v", font="Helvetica 12", width=2,
@@ -279,7 +305,7 @@ class StigmaUI(UI):
                                                   height=1, command=self.delete_stigma)
         self.stigma_navigation_frame = Frame(self)
         self.go_up_button = ClassicButton(self.stigma_navigation_frame, text="˄", width=2, height=1, command=self.go_up)
-        self.selected_stigma_label = ClassicLabel(self.stigma_navigation_frame, text="Метка 0 из 0")
+        self.selected_stigma_label = ClassicLabel(self.stigma_navigation_frame)
         self.go_down_button = ClassicButton(self.stigma_navigation_frame, text="˅", width=2, height=1,
                                             command=self.go_down)
         self.add_stigma_button = ClassicButton(self.stigma_navigation_frame, text="Добавить", font="Helvetica 13",
@@ -300,16 +326,25 @@ class StigmaUI(UI):
 
         self.stigma_placed()
 
+    def set_new_index(self, new_index, type="non-by-user"):
+        try:
+            if type == "by-user":
+                new_index = int(new_index) - 1
+            elif type == "non-by-user":
+                new_index = int(new_index)
+            if -1 < new_index < len(self.operational_stigma_list[settings_interface.password_index]):
+                self.stigma_index = new_index
+        except:
+            return "Index is not correct!"
+
     def stigma_placed_forget(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         for i in range(len(stigma_list)):
             stigma_list[i].grid_forget()
         self.stigma_settings_frame.grid_forget()
 
     def stigma_placed(self):
-        print(settings_interface.scroll_password_box.index)
-        print(self.operational_stigma_list[settings_interface.scroll_password_box.index])
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         for i in range(len(stigma_list)):
             stigma_list[i].grid(column=0, row=i)
         self._show_stigma_settings_frame()
@@ -317,58 +352,53 @@ class StigmaUI(UI):
         self._check_disable_on_add_button()
 
     def _update_selected_stigma_label(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         if len(stigma_list) > 0:
-            self.selected_stigma_label["text"] = f"Номер {self.scroll_stigma_list.index + 1} из {len(stigma_list)}"
+            self.selected_stigma_label["text"] = f"Номер {self.stigma_index + 1} из {len(stigma_list)}"
         else:
             self.selected_stigma_label["text"] = "Меток нет"
 
     def _show_stigma_settings_frame(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         if len(stigma_list) > 0:
-            self.stigma_settings_frame.grid(column=1, row=self.scroll_stigma_list.index)
+            self.stigma_settings_frame.grid(column=1, row=self.stigma_index)
         else:
             self.stigma_settings_frame.grid_forget()
 
     def _check_disable_on_add_button(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         if len(stigma_list) > 9:
             self.add_stigma_button["state"] = DISABLED
         else:
             self.add_stigma_button["state"] = NORMAL
 
-
     def add_stigma(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         self.stigma_placed_forget()
         stigma_list.append(Stigma(self.stigma_place_frame, text=f"Метка {len(stigma_list) + 1}"))
-        self.scroll_stigma_list.set_length(len(stigma_list))
-        self.scroll_stigma_list.set_index(len(stigma_list) - 1)
-        self.operational_stigma_list[settings_interface.scroll_password_box.index] = stigma_list
+        self.set_new_index(len(stigma_list) - 1)
         self.stigma_placed()
 
     def delete_stigma(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
         self.stigma_placed_forget()
-        stigma_list.pop(self.scroll_stigma_list.index)
-        self.scroll_stigma_list.set_length(len(stigma_list))
-        if self.scroll_stigma_list.index > 0:
-            self.scroll_stigma_list.set_index(len(stigma_list) - 1)
-        self.operational_stigma_list[settings_interface.scroll_password_box.index] = stigma_list
+        stigma_list.pop(self.stigma_index)
+        if self.stigma_index > 0:
+            self.set_new_index(len(stigma_list) - 1)
         self.stigma_placed()
 
     def swap_stigmas(self):
-        stigma_list = self.operational_stigma_list[settings_interface.scroll_password_box.index]
+        stigma_list = self.operational_stigma_list[settings_interface.password_index]
 
         def logic_of_swap(first_index, step):
             self.stigma_placed_forget()
             k = stigma_list[first_index]
             stigma_list[first_index] = stigma_list[(first_index + step) % len(stigma_list)]
             stigma_list[(first_index + step) % len(stigma_list)] = k
-            self.scroll_stigma_list.set_index((first_index + step) % len(stigma_list))
+            self.set_new_index((first_index + step) % len(stigma_list))
             self.stigma_placed()
 
-        logic_of_swap(self.scroll_stigma_list.index, 1)
+        logic_of_swap(self.stigma_index, 1)
 
     def open_stigma_creator(self):
         self.grid_forget()
@@ -376,14 +406,19 @@ class StigmaUI(UI):
 
     def go_up(self):
         self.stigma_placed_forget()
-        self.scroll_stigma_list.turn_left()
+        if self.stigma_index == 0:
+            self.set_new_index(len(self.operational_stigma_list[settings_interface.password_index]) - 1)
+        else:
+            self.set_new_index(self.stigma_index - 1)
         self.stigma_placed()
 
     def go_down(self):
         self.stigma_placed_forget()
-        self.scroll_stigma_list.turn_right()
+        if self.stigma_index == len(self.operational_stigma_list[settings_interface.password_index]) - 1:
+            self.set_new_index(0)
+        else:
+            self.set_new_index(self.stigma_index + 1)
         self.stigma_placed()
-
 
 
 class CreatorStigmaUI(UI):
@@ -437,12 +472,11 @@ class CreatorStigmaUI(UI):
         self.example.change_color(red=self.red_scale.get(), green=self.green_scale.get(), blue=self.blue_scale.get())
 
     def confirm_changes(self):
-        password_index = settings_interface.scroll_password_box.index
-        stigma_index = stigma_interface.scroll_stigma_list.index
+        password_index = settings_interface.password_index
+        stigma_index = stigma_interface.stigma_index
         stigma = stigma_interface.operational_stigma_list[password_index][stigma_index]
         stigma_interface.stigma_placed_forget()
-        stigma.change_color(self.example.color.get("green"), self.example.color.get("blue"),
-                            self.example.color.get("red"))
+        stigma.change_color(self.example.color.green, self.example.color.blue, self.example.color.red)
         stigma.change_name(self.example.get("name"))
         stigma_interface.stigma_placed()
         self.leave_from_creator()
@@ -456,10 +490,11 @@ savebox_password_frame = Frame()
 settings_interface = SetUI(savebox_password_frame)
 main_interface = MainUI(savebox_password_frame)
 stigma_interface = StigmaUI(savebox_password_frame)
-stigma_creator_interface = CreatorStigmaUI(savebox_password_frame)
 
-settings_interface.grid(column=0, row=0)
-main_interface.grid(column=1, row=0)
-stigma_interface.grid(column=2, row=0)
+stigma_creator_interface = CreatorStigmaUI(savebox_password_frame)
+protect_interface = ProtectUI(savebox_password_frame)
+
+protect_interface.grid(column=1, row=0)
+
 
 update_passwordbox_information()
